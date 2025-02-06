@@ -2,6 +2,11 @@ import fs from 'fs'
 import path from 'path'
 import sharp from 'sharp'
 import heicConvert from 'heic-convert'
+import { execSync } from 'child_process'
+
+export const isImageFile = filename => {
+  return /\.(png|webp|gif|jpe?g)$/i.test(filename)
+}
 
 export const encodeImageToBase64 = imagePath => {
   try {
@@ -14,11 +19,41 @@ export const encodeImageToBase64 = imagePath => {
     process.exit(1)
   }
 }
+export const convertToJpeg = async (inputFilePath) => {
+    try {
+        const ext = path.extname(inputFilePath).toLowerCase();
+        let inputBuffer = fs.readFileSync(inputFilePath);
+        let processedBuffer;
 
-export async function convertHeicToJpeg(inputFilePath) {
+        if (ext === ".heic" || ext === ".heif") {
+            console.log("📸 Converting HEIC to JPEG...");
+            processedBuffer = await heicConvert({
+                buffer: inputBuffer,
+                format: "JPEG",
+                quality: 1,
+            });
+        } else {
+            console.log(`🎨 Converting ${ext.toUpperCase()} to JPEG...`);
+            processedBuffer = inputBuffer;
+        }
+
+        // Convert the processed buffer to JPEG using sharp
+        const jpegBuffer = await sharp(processedBuffer)
+            .jpeg({ quality: 90 }) // Adjust quality if needed
+            .toBuffer();
+
+        console.log("✅ Conversion successful!");
+        const imageEncoded = jpegBuffer.toString('base64')
+        return imageEncoded; // Return the JPEG buffer
+    } catch (error) {
+        console.error("❌ Error converting image:", error);
+    }
+}
+
+export const convertHeicToJpeg = async inputFilePath => {
   try {
-    const fileName = path.basename(inputFilePath, path.extname(inputFilePath))
-    console.log('fileName: ', fileName)
+    console.log(`### Run convertHeicToJpeg on ${inputFilePath}`)
+    // const fileName = path.basename(inputFilePath, path.extname(inputFilePath)) // get name of file without .ext
     // Read HEIC file into memory
     const inputBuffer = fs.readFileSync(inputFilePath)
 
@@ -26,18 +61,17 @@ export async function convertHeicToJpeg(inputFilePath) {
     let rawImageBuffer = await heicConvert({
       buffer: inputBuffer,
       format: 'JPEG',
-      quality: 1, // Quality range: 0 (worst) - 1 (best)
+      quality: 0.5, // Quality range: 0 (worst) - 1 (best)
     })
 
     // Use sharp to process the image and output as a JPEG buffer
     let jpegBuffer = await sharp(rawImageBuffer)
-      .jpeg({ quality: 100 }) // Adjust quality if needed
+      .jpeg({ quality: 70 }) // Adjust quality if needed
       .toBuffer()
 
-    console.log('HEIC converted to JPEG successfully!')
-
-    // (Optional) Save to disk for verification
-    fs.writeFileSync(`${fileName}.jpg`, jpegBuffer)
+    console.log('### HEIC converted to JPEG successfully!')
+    const imageEncoded = jpegBuffer.toString('base64')
+    // fs.writeFileSync(`${fileName}.jpg`, jpegBuffer)
 
     // Free raw image and JPEG buffer memory
     rawImageBuffer = null
@@ -45,8 +79,25 @@ export async function convertHeicToJpeg(inputFilePath) {
 
     global.gc && global.gc() // Force garbage collection (only works if Node.js is run with `--expose-gc`)
 
-    return jpegBuffer // JPEG buffer in memory
+    return imageEncoded
   } catch (error) {
     console.error('Error converting HEIC to JPEG:', error)
   }
+}
+
+export const tagImageFile = (response, filePath) => {
+  console.log(`🏷️ Associated tags: ${response.choices[0].message.content}`)
+  execSync(`tag -a "${response.choices[0].message.content}" ${filePath}`)
+  console.log('✅ Image tagged!')
+  // execSync(`export TAGS=${response.choices[0].message.content}`,{ stdio: "inherit" }, (error, stdout, stderr) => {
+  //     if (error) {
+  //         console.error(`❌ Error: ${error.message}`);
+  //         return;
+  //     }
+  //     if (stderr) {
+  //         console.error(`⚠️ Stderr: ${stderr}`);
+  //         return;
+  //     }
+  //     console.log("Bash Output:\n", stdout);
+  // });
 }
