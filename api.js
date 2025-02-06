@@ -2,6 +2,7 @@ import OpenAI from "openai";
 import fs from "fs";
 import path from "path";
 import "dotenv/config";
+import { execSync } from "child_process";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -19,7 +20,9 @@ const encodeImageToBase64 = (imagePath) => {
   }
 };
 
-const base64Image = encodeImageToBase64("./images/mirvish.jpg");
+const filePath = process.argv[2];
+
+const base64Image = encodeImageToBase64(`${filePath}`);
 
 const response = await openai.chat.completions.create({
   model: "gpt-4o-mini",
@@ -29,7 +32,7 @@ const response = await openai.chat.completions.create({
       content: [
         {
           type: "text",
-          text: "Provide a list of tags that visually describe this image in a string list of comma separated words like 'word, word, word'",
+          text: "Provide a list of tags that visually describe this image in a string list of comma separated descriptivee adjectives in 'word, word, word' format",
         },
         {
           type: "image_url",
@@ -43,4 +46,18 @@ const response = await openai.chat.completions.create({
   store: true,
 });
 
+process.env.TAGS = response.choices[0].message.content;
+execSync("echo $TAGS", { stdio: "inherit", env: process.env });
 console.log(response.choices[0].message.content);
+
+// execSync(`export TAGS=${response.choices[0].message.content}`,{ stdio: "inherit" }, (error, stdout, stderr) => {
+//     if (error) {
+//         console.error(`❌ Error: ${error.message}`);
+//         return;
+//     }
+//     if (stderr) {
+//         console.error(`⚠️ Stderr: ${stderr}`);
+//         return;
+//     }
+//     console.log("Bash Output:\n", stdout);
+// });

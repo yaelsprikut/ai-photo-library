@@ -1,8 +1,14 @@
 #!/bin/bash
 
-# tag -a "Work, Urgent" /path/to/file.txt
-TAGS=$(node api.js)
+GREEN='\033[1;32m'
+NC='\033[0m' # No color
+DIR="images"
 
-echo "TAGS"
-echo $TAGS
-tag -a "$TAGS" images/mirvish.jpg
+for file in "$DIR"/*; do
+    echo "${GREEN}----------------------------------------------------------------------------------------------${NC}\n"
+    # echo "Processing: $file\n\n"
+    output=$(node api.js $file)
+    echo "\n\nTAGS: $output"
+    tag -a "$output" $file
+    # tag -r "*" $file
+done
