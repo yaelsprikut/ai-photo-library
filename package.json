@@ -11,8 +11,10 @@
     "dotenv": "^16.4.7",
     "express": "~4.16.1",
     "fs": "^0.0.1-security",
+    "heic-convert": "^2.1.0",
     "morgan": "~1.9.1",
     "openai": "^4.83.0",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "sharp": "^0.33.5"
   }
 }

@@ -21,6 +21,7 @@ const encodeImageToBase64 = imagePath => {
 }
 
 const filePath = process.argv[2]
+console.log('filePath: ', filePath)
 // const filePath = './images/elia.png';
 
 const base64Image = encodeImageToBase64(`${filePath}`)
@@ -52,8 +53,8 @@ const response = await openai.chat.completions.create({
 
 console.log(response.choices[0].message.content)
 console.log(`Associated tags: ${response.choices[0].message.content}\n\n`)
-execSync(`tag -a "${response.choices[0].message.content}" ${filePath}`);
-console.log('Image tagged! ');
+// execSync(`tag -a "${response.choices[0].message.content}" ${filePath}`);
+console.log('Image tagged! ')
 
 // execSync(`export TAGS=${response.choices[0].message.content}`,{ stdio: "inherit" }, (error, stdout, stderr) => {
 //     if (error) {
