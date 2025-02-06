@@ -25,8 +25,8 @@ const createPrompt = async base64Image => {
         content: [
           {
             type: 'text',
-            text: `Analyze this image and generate a concise list of visually descriptive tags to help identify the image. 
-                   Include relevant adjectives, recognizable objects, text, landmarks, and themes.
+            text: `Analyze this image and generate a concise list of visually descriptive tags to help identify 
+                   the image. Include relevant adjectives, recognizable objects, text, landmarks, and themes.
                    Format the response strictly as a comma-separated list in the format: 'word, word, word' 
                    (e.g., 'sunset, beach, palmtrees, goldensky, oceanwaves'). Use only single-word tags.`,
           },
