@@ -19,7 +19,7 @@ const encodeImageToBase64 = (imagePath) => {
   }
 };
 
-const base64Image = encodeImageToBase64("./background-yale.png");
+const base64Image = encodeImageToBase64("./images/mirvish.jpg");
 
 const response = await openai.chat.completions.create({
   model: "gpt-4o-mini",
@@ -29,7 +29,7 @@ const response = await openai.chat.completions.create({
       content: [
         {
           type: "text",
-          text: "Provide a list of tags that visually describe this image in json format",
+          text: "Provide a list of tags that visually describe this image in a string list of comma separated words like 'word, word, word'",
         },
         {
           type: "image_url",
@@ -43,4 +43,4 @@ const response = await openai.chat.completions.create({
   store: true,
 });
 
-console.log(response.choices[0]);
+console.log(response.choices[0].message.content);
