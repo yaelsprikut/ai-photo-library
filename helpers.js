@@ -25,7 +25,7 @@ async function convertHeicToJpeg(inputFilePath) {
     console.log('HEIC converted to JPEG successfully!')
 
     // (Optional) Save to disk for verification
-    fs.writeFileSync('output.jpg', jpegBuffer)
+    fs.writeFileSync(fileName, jpegBuffer)
 
     // Free raw image and JPEG buffer memory
     rawImageBuffer = null
