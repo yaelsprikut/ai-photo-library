@@ -15,6 +15,7 @@ const openai = new OpenAI({
 
 const filePath = process.argv[2]
 console.log('Valid IMG .extension: ', isImageFile(filePath))
+console.log('Valid IMG .extension: ', filePath)
 
 const createPrompt = async base64Image => {
   const response = await openai.chat.completions.create({

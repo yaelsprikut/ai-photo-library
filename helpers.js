@@ -30,7 +30,7 @@ export const convertToJpeg = async inputFilePath => {
       processedBuffer = await heicConvert({
         buffer: inputBuffer,
         format: 'JPEG',
-        quality: 1,
+        quality: 0.7,
       })
     } else {
       console.log(`🎨 Converting ${ext.toUpperCase()} to JPEG...`)
@@ -39,12 +39,14 @@ export const convertToJpeg = async inputFilePath => {
 
     // Convert the processed buffer to JPEG using sharp
     const jpegBuffer = await sharp(processedBuffer)
-      .jpeg({ quality: 90 }) // Adjust quality if needed
-      .toBuffer()
+      .jpeg({ quality: 60, progressive: true })
+      .toBuffer();
 
     console.log('✅ Conversion successful!')
-    const imageEncoded = jpegBuffer.toString('base64')
-    return imageEncoded // Return the JPEG buffer
+    // Free memory (Prevent GC overhead)
+    processedBuffer = Buffer.alloc(0);
+    return jpegBuffer.toString('base64');
+
   } catch (error) {
     console.error('❌ Error converting image:', error)
   }
@@ -87,7 +89,7 @@ export const convertHeicToJpeg = async inputFilePath => {
 
 export const tagImageFile = (response, filePath) => {
   console.log(`🏷️ Associated tags: ${response.choices[0].message.content}`)
-  execSync(`tag -a "${response.choices[0].message.content}" ${filePath}`)
+  execSync(`tag -a "${response.choices[0].message.content}" "${filePath}"`)
   console.log('✅ Image tagged!')
   // execSync(`export TAGS=${response.choices[0].message.content}`,{ stdio: "inherit" }, (error, stdout, stderr) => {
   //     if (error) {

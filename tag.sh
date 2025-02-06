@@ -9,9 +9,8 @@ for file in "$DIR"/*; do
     echo "${GREEN}----------------------------------------------------------------------------------------------${NC}\n"
     echo "Processing: $file\n\n"
 
-    node --no-warnings api.js $file
-    # tag -a "$output" $file
-    # tag -r "*" $file
+    node --no-warnings api.js "$file"
+    # tag -r "*" "$file"
 done
 
 for file in "$DIR"/*; do echo $file; done
