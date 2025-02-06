@@ -40,13 +40,12 @@ export const convertToJpeg = async inputFilePath => {
     // Convert the processed buffer to JPEG using sharp
     const jpegBuffer = await sharp(processedBuffer)
       .jpeg({ quality: 60, progressive: true })
-      .toBuffer();
+      .toBuffer()
 
     console.log('✅ Conversion successful!')
     // Free memory (Prevent GC overhead)
-    processedBuffer = Buffer.alloc(0);
-    return jpegBuffer.toString('base64');
-
+    processedBuffer = Buffer.alloc(0)
+    return jpegBuffer.toString('base64')
   } catch (error) {
     console.error('❌ Error converting image:', error)
   }
