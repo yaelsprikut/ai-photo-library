@@ -19,35 +19,35 @@ export const encodeImageToBase64 = imagePath => {
     process.exit(1)
   }
 }
-export const convertToJpeg = async (inputFilePath) => {
-    try {
-        const ext = path.extname(inputFilePath).toLowerCase();
-        let inputBuffer = fs.readFileSync(inputFilePath);
-        let processedBuffer;
+export const convertToJpeg = async inputFilePath => {
+  try {
+    const ext = path.extname(inputFilePath).toLowerCase()
+    let inputBuffer = fs.readFileSync(inputFilePath)
+    let processedBuffer
 
-        if (ext === ".heic" || ext === ".heif") {
-            console.log("📸 Converting HEIC to JPEG...");
-            processedBuffer = await heicConvert({
-                buffer: inputBuffer,
-                format: "JPEG",
-                quality: 1,
-            });
-        } else {
-            console.log(`🎨 Converting ${ext.toUpperCase()} to JPEG...`);
-            processedBuffer = inputBuffer;
-        }
-
-        // Convert the processed buffer to JPEG using sharp
-        const jpegBuffer = await sharp(processedBuffer)
-            .jpeg({ quality: 90 }) // Adjust quality if needed
-            .toBuffer();
-
-        console.log("✅ Conversion successful!");
-        const imageEncoded = jpegBuffer.toString('base64')
-        return imageEncoded; // Return the JPEG buffer
-    } catch (error) {
-        console.error("❌ Error converting image:", error);
+    if (ext === '.heic' || ext === '.heif') {
+      console.log('📸 Converting HEIC to JPEG...')
+      processedBuffer = await heicConvert({
+        buffer: inputBuffer,
+        format: 'JPEG',
+        quality: 1,
+      })
+    } else {
+      console.log(`🎨 Converting ${ext.toUpperCase()} to JPEG...`)
+      processedBuffer = inputBuffer
     }
+
+    // Convert the processed buffer to JPEG using sharp
+    const jpegBuffer = await sharp(processedBuffer)
+      .jpeg({ quality: 90 }) // Adjust quality if needed
+      .toBuffer()
+
+    console.log('✅ Conversion successful!')
+    const imageEncoded = jpegBuffer.toString('base64')
+    return imageEncoded // Return the JPEG buffer
+  } catch (error) {
+    console.error('❌ Error converting image:', error)
+  }
 }
 
 export const convertHeicToJpeg = async inputFilePath => {
