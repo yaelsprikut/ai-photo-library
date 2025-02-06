@@ -3,26 +3,14 @@ import fs from 'fs'
 import path from 'path'
 import 'dotenv/config'
 import { execSync } from 'child_process'
+import { encodeImageToBase64 } from './helpers.js'
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 })
 
-const encodeImageToBase64 = imagePath => {
-  try {
-    const absolutePath = path.resolve(imagePath)
-    const imageBuffer = fs.readFileSync(absolutePath)
-    const base64String = imageBuffer.toString('base64')
-    return base64String
-  } catch (error) {
-    console.error('Error reading image file:', error.message)
-    process.exit(1)
-  }
-}
-
 const filePath = process.argv[2]
 console.log('filePath: ', filePath)
-// const filePath = './images/elia.png';
 
 const base64Image = encodeImageToBase64(`${filePath}`)
 

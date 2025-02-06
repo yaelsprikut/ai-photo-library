@@ -3,9 +3,21 @@ import path from 'path'
 import sharp from 'sharp'
 import heicConvert from 'heic-convert'
 
-async function convertHeicToJpeg(inputFilePath) {
+export const encodeImageToBase64 = imagePath => {
   try {
-    const fileName = path.basename(inputFilePath)
+    const absolutePath = path.resolve(imagePath)
+    const imageBuffer = fs.readFileSync(absolutePath)
+    const base64String = imageBuffer.toString('base64')
+    return base64String
+  } catch (error) {
+    console.error('Error reading image file:', error.message)
+    process.exit(1)
+  }
+}
+
+export async function convertHeicToJpeg(inputFilePath) {
+  try {
+    const fileName = path.basename(inputFilePath, path.extname(inputFilePath))
     console.log('fileName: ', fileName)
     // Read HEIC file into memory
     const inputBuffer = fs.readFileSync(inputFilePath)
@@ -25,7 +37,7 @@ async function convertHeicToJpeg(inputFilePath) {
     console.log('HEIC converted to JPEG successfully!')
 
     // (Optional) Save to disk for verification
-    fs.writeFileSync(fileName, jpegBuffer)
+    fs.writeFileSync(`${fileName}.jpg`, jpegBuffer)
 
     // Free raw image and JPEG buffer memory
     rawImageBuffer = null
@@ -38,6 +50,3 @@ async function convertHeicToJpeg(inputFilePath) {
     console.error('Error converting HEIC to JPEG:', error)
   }
 }
-
-// Example Usage
-convertHeicToJpeg('images/IMG_4691.heic')
