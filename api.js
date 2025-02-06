@@ -25,7 +25,7 @@ const createPrompt = async base64Image => {
         content: [
           {
             type: 'text',
-            text: `Analyze this image and generate a concise list of visually descriptive tags. 
+            text: `Analyze this image and generate a concise list of visually descriptive tags to help identify the image. 
                    Include relevant adjectives, recognizable objects, text, landmarks, and themes.
                    Format the response strictly as a comma-separated list in the format: 'word, word, word' 
                    (e.g., 'sunset, beach, palmtrees, goldensky, oceanwaves'). Use only single-word tags.`,
@@ -45,16 +45,15 @@ const createPrompt = async base64Image => {
 }
 
 try {
+  let base64Image = null
   if (isImageFile(filePath)) {
-    const base64Image = encodeImageToBase64(`${filePath}`)
-    const promptTags = await createPrompt(base64Image)
-    tagImageFile(promptTags, filePath)
+    base64Image = encodeImageToBase64(`${filePath}`)
   } else {
     console.log('use converter')
-    const base64Image = await convertToJpeg(filePath)
-    const promptTags = await createPrompt(base64Image)
-    tagImageFile(promptTags, filePath)
+    base64Image = await convertToJpeg(`${filePath}`)
   }
+  const promptTags = await createPrompt(base64Image)
+  tagImageFile(promptTags, filePath)
 } catch (e) {
   console.log('error: ', e)
 }
