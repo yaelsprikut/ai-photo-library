@@ -52,7 +52,7 @@ for file in "$DIR"/*; do
             echo "🏷️ Tags already exist! $TAGS"
         fi
     fi
-    remove_tags "$file"
+    # remove_tags "$file"
 done
 
 echo "${GREEN}----------------------------------------------------------------------------------------------${NC}\n"
