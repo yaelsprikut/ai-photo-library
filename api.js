@@ -50,7 +50,7 @@ try {
   if (isImageFile(filePath)) {
     base64Image = encodeImageToBase64(`${filePath}`)
   } else {
-    console.log('use converter')
+    console.log('🔄 Use Converter')
     base64Image = await convertToJpeg(`${filePath}`)
   }
   const promptTags = await createPrompt(base64Image)

@@ -90,15 +90,4 @@ export const tagImageFile = (response, filePath) => {
   console.log(`🏷️ Associated tags: ${response.choices[0].message.content}`)
   execSync(`tag -a "${response.choices[0].message.content}" "${filePath}"`)
   console.log('✅ Image tagged!')
-  // execSync(`export TAGS=${response.choices[0].message.content}`,{ stdio: "inherit" }, (error, stdout, stderr) => {
-  //     if (error) {
-  //         console.error(`❌ Error: ${error.message}`);
-  //         return;
-  //     }
-  //     if (stderr) {
-  //         console.error(`⚠️ Stderr: ${stderr}`);
-  //         return;
-  //     }
-  //     console.log("Bash Output:\n", stdout);
-  // });
 }
