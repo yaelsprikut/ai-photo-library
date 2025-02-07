@@ -16,7 +16,7 @@ const openai = new OpenAI({
 
 const filePath = process.argv[2]
 
-console.log('Is image: ', isImageFile(filePath) ? "✅" : "❌");
+console.log('Is image: ', isImageFile(filePath) ? '✅' : '❌')
 console.log('File Name: ', filePath)
 
 const createPrompt = async base64Image => {
@@ -48,9 +48,9 @@ const createPrompt = async base64Image => {
 }
 
 try {
-  if(isVideoFile(filePath)) {
+  if (isVideoFile(filePath)) {
     console.log('❌ Skipping movie file...')
-    process.exit(0);
+    process.exit(0)
   }
   let base64Image = null
   if (isImageFile(filePath)) {
