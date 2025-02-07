@@ -15,5 +15,8 @@ To tag all photos in your library, just run:
 ```bash
  $ sh tag.sh
 ```
+
+Output:
+![alt text](image.png)
 And boom! 💥 Your photos will be scanned, and each image will get AI-generated tags for easy searching! 🎯✨
 
