@@ -11,7 +11,7 @@ remove_tags() {
 
 rename_file() {
     local file="$1"
-    
+
     # Check if file exists
     if [[ ! -f "$file" ]]; then
         echo "❌ Error: File '$file' not found!"
@@ -31,7 +31,6 @@ rename_file() {
     mv "$file" "$new_file"
     echo "✅ Renamed: '$file' → '$new_file'"
 }
-
 
 for file in "$DIR"/*; do
     echo "${CYAN}----------------------------------------------------------------------------------------------${NC}\n"
