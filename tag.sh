@@ -4,7 +4,7 @@ CYAN='\033[1;36m'
 GREEN='\033[1;32m'
 NC='\033[0m'
 YELLOW='\033[1;33m'
-DIR="images"
+DIR="images/Screenshots"
 
 remove_tags() {
     tag -r "*" "$1"
@@ -42,6 +42,8 @@ for file in "$DIR"/*; do
     if [[ "$file" =~ \  ]]; then
         echo "❌ $file contains spaces - skipping..."
         rename_file "$file"
+    elif [[ -d "$file" ]]; then
+        echo "❌ '$file' is a directory - skipping..."
     else
         if [[ -z "$TAGS" ]]; then
             echo "❌ No tags found for $file - proceed with tagging"
