@@ -12,13 +12,16 @@ remove_tags() {
 for file in "$DIR"/*; do
     echo "${CYAN}----------------------------------------------------------------------------------------------${NC}\n"
     echo "Processing: $file\n\n"
-    TAGS=$(tag -l "$file")
-    if [[ "$TAGS" ]]; then
-        echo "Image already tagged with $TAGS" && continue
+    TAGS=$(tag -l "$file" | awk -v var="$file" '{gsub(var, ""); print}')
+    if [[ "$file" =~ \  ]]; then
+        echo "❌ $file contains spaces - skipping..."
+    else
+        if [[ -z "$TAGS" ]]; then
+            echo "❌ No tags found for $file"
+        else
+            echo "🏷️ Tags for $file: $TAGS"
+        fi
     fi
-
-
-    # node --no-warnings api.js "$file"
     # remove_tags "$file"
 done
 
