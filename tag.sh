@@ -44,7 +44,7 @@ for file in "$DIR"/*; do
     else
         if [[ -z "$TAGS" ]]; then
             echo "❌ No tags found for $file - proceed with tagging"
-            # node --no-warnings api.js "$file"
+            node --no-warnings api.js "$file"
         else
             echo "🏷️ Tags already exist! $TAGS"
         fi
