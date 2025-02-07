@@ -3,6 +3,7 @@ SECONDS=0 # Start tracking time
 CYAN='\033[1;36m'
 GREEN='\033[1;32m'
 NC='\033[0m'
+YELLOW='\033[1;33m'
 DIR="images"
 
 remove_tags() {
