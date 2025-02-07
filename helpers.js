@@ -8,6 +8,20 @@ export const isImageFile = filename => {
   return /\.(png|webp|gif|jpe?g)$/i.test(filename)
 }
 
+export const isVideoFile = (filename) => {
+    // List of common video extensions
+    const videoExtensions = [
+        ".mp4", ".mkv", ".avi", ".mov", ".wmv",
+        ".flv", ".webm", ".mpeg", ".mpg", ".3gp"
+    ];
+
+    // Get the file extension (case insensitive)
+    const ext = path.extname(filename).toLowerCase();
+
+    // Check if extension is in the list
+    return videoExtensions.includes(ext);
+}
+
 export const encodeImageToBase64 = imagePath => {
   try {
     const absolutePath = path.resolve(imagePath)

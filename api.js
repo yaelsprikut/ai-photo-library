@@ -3,6 +3,7 @@ import fs from 'fs'
 import path from 'path'
 import 'dotenv/config'
 import {
+  isVideoFile,
   isImageFile,
   tagImageFile,
   encodeImageToBase64,
@@ -14,8 +15,9 @@ const openai = new OpenAI({
 })
 
 const filePath = process.argv[2]
-console.log('Valid IMG .extension: ', isImageFile(filePath))
-console.log('Valid IMG .extension: ', filePath)
+
+console.log('Is image: ', isImageFile(filePath) ? "✅" : "❌");
+console.log('File Name: ', filePath)
 
 const createPrompt = async base64Image => {
   const response = await openai.chat.completions.create({
@@ -46,6 +48,10 @@ const createPrompt = async base64Image => {
 }
 
 try {
+  if(isVideoFile(filePath)) {
+    console.log('❌ Skipping movie file...')
+    process.exit(0);
+  }
   let base64Image = null
   if (isImageFile(filePath)) {
     base64Image = encodeImageToBase64(`${filePath}`)
