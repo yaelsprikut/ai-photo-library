@@ -42,6 +42,8 @@ for file in "$DIR"/*; do
     if [[ "$file" =~ \  ]]; then
         echo "❌ $file contains spaces - skipping..."
         rename_file "$file"
+    elif [[ -d "$file" ]]; then
+        echo "❌ '$file' is a directory - skipping..."
     else
         if [[ -z "$TAGS" ]]; then
             echo "❌ No tags found for $file - proceed with tagging"

@@ -42,6 +42,17 @@ export const encodeImageToBase64 = imagePath => {
   }
 }
 export const convertToJpeg = async inputFilePath => {
+  // List of common video extensions
+  const imageExtensions = ['.png', '.jpg', '.jpeg', '.webp', '.gif']
+
+  // Get the file extension (case insensitive)
+  const ext = path.extname(inputFilePath).toLowerCase()
+
+  // Check if extension is in the list
+  if (!imageExtensions.includes(ext)) {
+    console.log(`cannot convert ${ext} file`)
+    process.exit(1)
+  }
   try {
     const ext = path.extname(inputFilePath).toLowerCase()
     let inputBuffer = fs.readFileSync(inputFilePath)
