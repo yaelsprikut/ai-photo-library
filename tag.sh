@@ -11,15 +11,18 @@ remove_tags() {
 
 for file in "$DIR"/*; do
     echo "${CYAN}----------------------------------------------------------------------------------------------${NC}\n"
-    echo "Processing: $file\n\n"
+    echo "Processing: $file\n"
+
     TAGS=$(tag -l "$file" | awk -v var="$file" '{gsub(var, ""); print}')
+
     if [[ "$file" =~ \  ]]; then
         echo "❌ $file contains spaces - skipping..."
     else
         if [[ -z "$TAGS" ]]; then
-            echo "❌ No tags found for $file"
+            echo "❌ No tags found for $file - proceed with tagging"
+            node --no-warnings api.js "$file"
         else
-            echo "🏷️ Tags for $file: $TAGS"
+            echo "🏷️ Tags already exist! $TAGS"
         fi
     fi
     # remove_tags "$file"

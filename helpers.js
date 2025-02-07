@@ -30,7 +30,7 @@ export const convertToJpeg = async inputFilePath => {
       processedBuffer = await heicConvert({
         buffer: inputBuffer,
         format: 'JPEG',
-        quality: 0.7,
+        quality: 0.6,
       })
     } else {
       console.log(`🎨 Converting ${ext.toUpperCase()} to JPEG...`)
@@ -40,6 +40,7 @@ export const convertToJpeg = async inputFilePath => {
     // Convert the processed buffer to JPEG using sharp
     const jpegBuffer = await sharp(processedBuffer)
       .jpeg({ quality: 60, progressive: true })
+      .resize(150)
       .toBuffer()
 
     console.log('✅ Conversion successful!')
