@@ -9,6 +9,30 @@ remove_tags() {
     tag -r "*" "$1"
 }
 
+rename_file() {
+    local file="$1"
+    
+    # Check if file exists
+    if [[ ! -f "$file" ]]; then
+        echo "❌ Error: File '$file' not found!"
+        return 1
+    fi
+
+    # Generate a new filename by replacing spaces with underscores
+    local new_file="${file// /_}"
+
+    # If the new filename is the same, do nothing
+    if [[ "$file" == "$new_file" ]]; then
+        echo "✅ No spaces found in '$file'"
+        return 0
+    fi
+
+    # Rename the file
+    mv "$file" "$new_file"
+    echo "✅ Renamed: '$file' → '$new_file'"
+}
+
+
 for file in "$DIR"/*; do
     echo "${CYAN}----------------------------------------------------------------------------------------------${NC}\n"
     echo "Processing: $file\n"
@@ -17,6 +41,7 @@ for file in "$DIR"/*; do
 
     if [[ "$file" =~ \  ]]; then
         echo "❌ $file contains spaces - skipping..."
+        rename_file "$file"
     else
         if [[ -z "$TAGS" ]]; then
             echo "❌ No tags found for $file - proceed with tagging"
