@@ -1,6 +1,4 @@
 import OpenAI from 'openai'
-import fs from 'fs'
-import path from 'path'
 import 'dotenv/config'
 import {
   isVideoFile,
