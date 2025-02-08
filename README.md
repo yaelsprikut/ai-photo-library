@@ -9,10 +9,14 @@ Welcome to VisionTagger, a tiny but mighty Node.js app that uses OpenAI's Vision
 * ✅ Works on any photo library—point it to a folder & go! 🗂️
 * ✅ Super lightweight—just install & run! 🚀
 
+## 🔧 Prerequisites
+You must have [exiftool](https://exiftool.org/) installed on your local OS environment. 
+
 ## 🚀 Usage
 To tag all photos in your library, just run:
 
 ```bash
+ $ npm i
  $ sh tag.sh
 ```
 
