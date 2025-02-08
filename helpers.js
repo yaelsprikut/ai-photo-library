@@ -43,7 +43,7 @@ export const encodeImageToBase64 = imagePath => {
 }
 export const convertToJpeg = async inputFilePath => {
   // List of common video extensions
-  const imageExtensions = ['.png', '.jpg', '.jpeg', '.webp', '.gif']
+  const imageExtensions = ['.png', '.jpg', '.jpeg', '.webp', '.gif', '.heic']
 
   // Get the file extension (case insensitive)
   const ext = path.extname(inputFilePath).toLowerCase()
