@@ -125,3 +125,11 @@ export const tagImageFile = (response, filePath) => {
   execSync(`tag -a "${response.choices[0].message.content}" "${filePath}"`)
   console.log('✅ Image tagged!')
 }
+
+export const descImageFile = (response, filePath) => {
+  console.log(`📝 Associated comment: ${response.choices[0].message.content}`)
+  execSync(
+    `exiftool -overwrite_original -Description="${response.choices[0].message.content}" ${filePath}`,
+  )
+  console.log('✅ Image description added!')
+}

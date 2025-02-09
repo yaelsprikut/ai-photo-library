@@ -4,9 +4,11 @@ import {
   isVideoFile,
   isImageFile,
   tagImageFile,
+  descImageFile,
   encodeImageToBase64,
   convertToJpeg,
 } from './helpers.js'
+import prompt from './prompts.js'
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -16,6 +18,7 @@ const filePath = process.argv[2]
 
 console.log('Is image: ', isImageFile(filePath) ? '✅' : '❌')
 console.log('File Name: ', filePath)
+console.log('tagsPrompt: ', prompt.tagsPrompt)
 
 const createPrompt = async base64Image => {
   const response = await openai.chat.completions.create({
@@ -26,10 +29,7 @@ const createPrompt = async base64Image => {
         content: [
           {
             type: 'text',
-            text: `Analyze this image and generate a concise list of visually descriptive tags to help identify 
-                   the image. Include relevant adjectives, recognizable objects, text, landmarks, and themes.
-                   Format the response strictly as a comma-separated list in the format: 'word, word, word' 
-                   (e.g., 'sunset, beach, palmtrees, goldensky, oceanwaves'). Use only single-word tags.`,
+            text: prompt.descPrompt,
           },
           {
             type: 'image_url',
@@ -58,7 +58,8 @@ try {
     base64Image = await convertToJpeg(`${filePath}`)
   }
   const promptTags = await createPrompt(base64Image)
-  tagImageFile(promptTags, filePath)
+  // tagImageFile(promptTags, filePath)
+  descImageFile(promptTags, filePath)
 } catch (e) {
   console.log('error: ', e)
 }
