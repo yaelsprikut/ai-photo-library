@@ -28,6 +28,7 @@ To run the location* scripts, you must create a virtual env and install [geopy](
  $ python3 -m venv venv
  $ source venv/bin/activate
  $ python3 -m pip install geopy
+ $ sh location.py
 ```
 Output:
 ![alt text](image-1.png)
