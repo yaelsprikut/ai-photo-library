@@ -4,7 +4,7 @@ CYAN='\033[1;36m'
 GREEN='\033[1;32m'
 NC='\033[0m'
 YELLOW='\033[1;33m'
-DIR="images/Screenshots"
+DIR="images"
 
 remove_tags() {
     tag -r "*" "$1"
@@ -39,20 +39,20 @@ for file in "$DIR"/*; do
 
     TAGS=$(tag -l "$file" | awk -v var="$file" '{gsub(var, ""); print}')
 
-    if [[ "$file" =~ \  ]]; then
-        echo "❌ $file contains spaces - skipping..."
-        rename_file "$file"
-    elif [[ -d "$file" ]]; then
-        echo "❌ '$file' is a directory - skipping..."
-    else
-        if [[ -z "$TAGS" ]]; then
-            echo "❌ No tags found for $file - proceed with tagging"
-            node --no-warnings api.js "$file"
-        else
-            echo "🏷️ Tags already exist! $TAGS"
-        fi
-    fi
-    # remove_tags "$file"
+    # if [[ "$file" =~ \  ]]; then
+    #     echo "❌ $file contains spaces - skipping..."
+    #     rename_file "$file"
+    # elif [[ -d "$file" ]]; then
+    #     echo "❌ '$file' is a directory - skipping..."
+    # else
+    #     if [[ -z "$TAGS" ]]; then
+    #         echo "❌ No tags found for $file - proceed with tagging"
+    #         node --no-warnings api.js "$file"
+    #     else
+    #         echo "🏷️ Tags already exist! $TAGS"
+    #     fi
+    # fi
+    remove_tags "$file"
 done
 
 echo "${GREEN}----------------------------------------------------------------------------------------------${NC}\n"
