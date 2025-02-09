@@ -19,7 +19,7 @@ To tag all photos in your library, just run:
  $ npm i
  $ sh tag.sh
 ```
-To run the location* scripts, you must create a virtual env and install geopy
+To run the location* scripts, you must create a virtual env and install [geopy](https://geopy.readthedocs.io/en/stable/)
 ```bash
  $ python3 -m venv venv
  $ source venv/bin/activate
